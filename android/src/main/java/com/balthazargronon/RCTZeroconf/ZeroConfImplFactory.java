@@ -18,6 +18,6 @@ public class ZeroConfImplFactory {
     }
 
     public Zeroconf getZeroconf() {
-        return new NsdServiceImpl(zeroconfModule, context)
+        return new NsdServiceImpl(zeroconfModule, context);
     }
 }
