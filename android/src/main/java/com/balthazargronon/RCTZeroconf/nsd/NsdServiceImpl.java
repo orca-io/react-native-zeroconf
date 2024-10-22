@@ -63,13 +63,13 @@ public class NsdServiceImpl implements Zeroconf {
             @Override
             public void onDiscoveryStarted(String serviceType) {
                 Log.d(TAG, "Discovery Started");
-                zeroconfModule.sendEvent(reactApplicationContext, ZeroconfModule.EVENT_START, null);
+                zeroconfModule.sendEvent(ZeroconfModule.EVENT_START, null);
             }
 
             @Override
             public void onDiscoveryStopped(String serviceType) {
                 Log.d(TAG, "Discovery Stopped");
-                zeroconfModule.sendEvent(reactApplicationContext, ZeroconfModule.EVENT_STOP, null);
+                zeroconfModule.sendEvent(ZeroconfModule.EVENT_STOP, null);
             }
 
             @Override
@@ -78,7 +78,7 @@ public class NsdServiceImpl implements Zeroconf {
                 WritableMap service = new WritableNativeMap();
                 service.putString(ZeroconfModule.KEY_SERVICE_NAME, serviceInfo.getServiceName());
 
-                zeroconfModule.sendEvent(reactApplicationContext, ZeroconfModule.EVENT_FOUND, service);
+                zeroconfModule.sendEvent(ZeroconfModule.EVENT_FOUND, service);
                 mNsdManager.resolveService(serviceInfo, new ZeroResolveListener());
             }
 
@@ -87,7 +87,7 @@ public class NsdServiceImpl implements Zeroconf {
                 Log.d(TAG, "Service Lost: " + serviceInfo.getServiceName());
                 WritableMap service = new WritableNativeMap();
                 service.putString(ZeroconfModule.KEY_SERVICE_NAME, serviceInfo.getServiceName());
-                zeroconfModule.sendEvent(reactApplicationContext, ZeroconfModule.EVENT_REMOVE, service);
+                zeroconfModule.sendEvent(ZeroconfModule.EVENT_REMOVE, service);
             }
         };
 
@@ -161,7 +161,7 @@ public class NsdServiceImpl implements Zeroconf {
     private void handleDiscoveryError(String action, int errorCode) {
         String error = String.format("Discovery %s failed with code: %d", action, errorCode);
         Log.e(TAG, error);
-        zeroconfModule.sendEvent(reactApplicationContext, ZeroconfModule.EVENT_ERROR, error);
+        zeroconfModule.sendEvent(ZeroconfModule.EVENT_ERROR, error);
     }
 
     private ReactApplicationContext getReactApplicationContext() {
@@ -177,7 +177,7 @@ public class NsdServiceImpl implements Zeroconf {
             } else {
                 String error = "Resolving service failed with code: " + errorCode;
                 Log.e(TAG, error);
-                zeroconfModule.sendEvent(getReactApplicationContext(), ZeroconfModule.EVENT_ERROR, error);
+                zeroconfModule.sendEvent(ZeroconfModule.EVENT_ERROR, error);
             }
         }
 
@@ -185,7 +185,7 @@ public class NsdServiceImpl implements Zeroconf {
         public void onServiceResolved(NsdServiceInfo serviceInfo) {
             Log.d(TAG, "Service Resolved: " + serviceInfo.getServiceName());
             WritableMap service = serviceInfoToMap(serviceInfo);
-            zeroconfModule.sendEvent(getReactApplicationContext(), ZeroconfModule.EVENT_RESOLVE, service);
+            zeroconfModule.sendEvent(ZeroconfModule.EVENT_RESOLVE, service);
         }
     }
 
@@ -197,14 +197,14 @@ public class NsdServiceImpl implements Zeroconf {
             Log.d(TAG, "Service Registered: " + serviceName);
 
             WritableMap service = serviceInfoToMap(serviceInfo);
-            zeroconfModule.sendEvent(getReactApplicationContext(), ZeroconfModule.EVENT_PUBLISHED, service);
+            zeroconfModule.sendEvent(ZeroconfModule.EVENT_PUBLISHED, service);
         }
 
         @Override
         public void onRegistrationFailed(NsdServiceInfo serviceInfo, int errorCode) {
             String error = "Service registration failed for " + serviceInfo.getServiceName() + " with code: " + errorCode;
             Log.e(TAG, error);
-            zeroconfModule.sendEvent(getReactApplicationContext(), ZeroconfModule.EVENT_ERROR, error);
+            zeroconfModule.sendEvent(ZeroconfModule.EVENT_ERROR, error);
         }
 
         @Override
@@ -213,14 +213,14 @@ public class NsdServiceImpl implements Zeroconf {
             Log.d(TAG, "Service Unregistered: " + serviceName);
 
             WritableMap service = serviceInfoToMap(serviceInfo);
-            zeroconfModule.sendEvent(getReactApplicationContext(), ZeroconfModule.EVENT_UNREGISTERED, service);
+            zeroconfModule.sendEvent(ZeroconfModule.EVENT_UNREGISTERED, service);
         }
 
         @Override
         public void onUnregistrationFailed(NsdServiceInfo serviceInfo, int errorCode) {
             String error = "Service unregistration failed for " + serviceInfo.getServiceName() + " with code: " + errorCode;
             Log.e(TAG, error);
-            zeroconfModule.sendEvent(getReactApplicationContext(), ZeroconfModule.EVENT_ERROR, error);
+            zeroconfModule.sendEvent(ZeroconfModule.EVENT_ERROR, error);
         }
     }
 
@@ -252,7 +252,7 @@ public class NsdServiceImpl implements Zeroconf {
                     } catch (UnsupportedEncodingException e) {
                         String error = "Failed to encode txtRecord for key " + key;
                         Log.e(TAG, error, e);
-                        zeroconfModule.sendEvent(getReactApplicationContext(), ZeroconfModule.EVENT_ERROR, error);
+                        zeroconfModule.sendEvent(ZeroconfModule.EVENT_ERROR, error);
                     }
                 });
             }

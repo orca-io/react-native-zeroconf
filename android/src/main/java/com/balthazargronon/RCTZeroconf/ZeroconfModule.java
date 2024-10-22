@@ -126,7 +126,7 @@ public class ZeroconfModule extends ReactContextBaseJavaModule {
      * @param eventName The name of the event.
      * @param params    The event parameters.
      */
-    private void sendEvent(String eventName, @Nullable Object params) {
+    public void sendEvent(String eventName, @Nullable Object params) {
         ReactApplicationContext reactContext = getReactApplicationContext();
         if (reactContext.hasActiveCatalystInstance()) {
             reactContext
