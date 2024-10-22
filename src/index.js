@@ -1,4 +1,4 @@
-import { Platform, NativeModules, DeviceEventEmitter } from 'react-native'
+import { NativeModules, DeviceEventEmitter } from 'react-native'
 import { EventEmitter } from 'events'
 
 const RNZeroconf = NativeModules.RNZeroconf
@@ -127,36 +127,25 @@ export default class Zeroconf extends EventEmitter {
   /**
    * Stop current scan if any
    */
-  stop(implType = ImplType.NSD) {
-    if (Platform.OS === 'android') {
-      RNZeroconf.stop(implType)
-    } else {
-      RNZeroconf.stop()
-    }
+  stop() {
+      RNZeroconf.stop();
   }
 
   /**
    * Publish a service
    */
-  publishService(type, protocol, domain = 'local.', name, port, txt = {}, implType = ImplType.NSD) {
+  publishService(type, protocol, domain = 'local.', name, port, txt = {}) {
     if (Object.keys(txt).length !== 0) {
       Object.entries(txt).map(([key, value]) => (txt[key] = value.toString()))
     }
-    if (Platform.OS === 'android') {
-      RNZeroconf.registerService(type, protocol, domain, name, port, txt, implType)
-    } else {
-      RNZeroconf.registerService(type, protocol, domain, name, port, txt)
-    }
+
+      RNZeroconf.registerService(type, protocol, domain, name, port, txt);
   }
 
   /**
    * Unpublish a service
    */
-  unpublishService(name, implType = ImplType.NSD) {
-    if (Platform.OS === 'android') {
-      RNZeroconf.unregisterService(name, implType)
-    } else {
-      RNZeroconf.unregisterService(name)
-    }
+  unpublishService(name) {
+    RNZeroconf.unregisterService(name);
   }
 }
