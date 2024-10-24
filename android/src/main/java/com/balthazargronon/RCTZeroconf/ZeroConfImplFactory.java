@@ -6,8 +6,6 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import org.apache.commons.lang3.StringUtils;
 
 public class ZeroConfImplFactory {
-    public static final String NSD_IMPL = "NSD";
-
     private ZeroconfModule zeroconfModule;
     private ReactApplicationContext context;
     private Zeroconf nsdService;
