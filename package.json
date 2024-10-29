@@ -3,6 +3,7 @@
   "version": "0.13.8",
   "description": "A Zeroconf discovery utility for react-native",
   "main": "dist",
+  "types": "./src/index.d.ts",
   "scripts": {
     "lint": "eslint src/*.js",
     "build": "rm -rf dist && mkdir dist && babel src -o dist/index.js"
