@@ -1,5 +1,6 @@
 package com.balthazargronon.RCTZeroconf.nsd;
 
+import android.annotation.Nullable;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.nsd.NsdManager;
@@ -24,6 +25,7 @@ import java.net.InetAddress;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
 
 public class NsdServiceImpl implements Zeroconf {
     private static final String TAG = "NsdServiceImpl";
@@ -44,7 +46,7 @@ public class NsdServiceImpl implements Zeroconf {
     }
 
     @Override
-    public void scan(String type, String protocol, String domain) {
+    public void scan(String type, String protocol, String domain, @Nullable String regexFilterName) {
         stop(); // Ensure previous scans are stopped
 
         acquireMulticastLock();
@@ -74,12 +76,23 @@ public class NsdServiceImpl implements Zeroconf {
 
             @Override
             public void onServiceFound(NsdServiceInfo serviceInfo) {
-                Log.d(TAG, "Service Found: " + serviceInfo.getServiceName());
+                String serviceName = serviceInfo.getServiceName();
+                Log.d(TAG, "Service Found: " + serviceName);
                 WritableMap service = new WritableNativeMap();
-                service.putString(ZeroconfModule.KEY_SERVICE_NAME, serviceInfo.getServiceName());
+                service.putString(ZeroconfModule.KEY_SERVICE_NAME, serviceName);
 
                 zeroconfModule.sendEvent(ZeroconfModule.EVENT_FOUND, service);
-                mNsdManager.resolveService(serviceInfo, new ZeroResolveListener());
+
+                if (regexFilterName == null) {
+                    mNsdManager.resolveService(serviceInfo, new ZeroResolveListener());
+                } else {
+                    Log.d(TAG, "Filtering service by name matching: " + regexFilterName);
+                    Pattern pattern = Pattern.compile(regexFilterName);
+                    if (pattern.matcher(serviceName).find()) {
+                        Log.d(TAG, "Service Name " + serviceName + " matched " + regexFilterName);
+                        mNsdManager.resolveService(serviceInfo, new ZeroResolveListener());
+                    }
+                }
             }
 
             @Override

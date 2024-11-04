@@ -117,35 +117,45 @@ export default class Zeroconf extends EventEmitter {
   /**
    * Scan for Zeroconf services,
    * Defaults to _http._tcp. on local domain
+   *
+   * @param {string} [domain='local.']
+   * @param {string} [protocol='tcp']
+   * @param {string} [type='http']
+   * @param {RegExp | undefined} [regexFilterName=undefined]
    */
-  scan(type = 'http', protocol = 'tcp', domain = 'local.') {
+  scan(type = 'http', protocol = 'tcp', domain = 'local.', regexFilterName = undefined) {
     this._services = {}
     this.emit('update')
-    RNZeroconf.scan(type, protocol, domain);
+    if (regexFilterName instanceof RegExp) {
+      RNZeroconf.scan(type, protocol, domain, regexFilterName.source)
+    } else {
+      RNZeroconf.scan(type, protocol, domain, undefined)
+    }
   }
 
   /**
    * Stop current scan if any
    */
   stop() {
-      RNZeroconf.stop();
+    RNZeroconf.stop()
   }
 
   /**
    * Publish a service
    */
+  // eslint-disable-next-line max-params
   publishService(type, protocol, domain = 'local.', name, port, txt = {}) {
     if (Object.keys(txt).length !== 0) {
       Object.entries(txt).map(([key, value]) => (txt[key] = value.toString()))
     }
 
-      RNZeroconf.registerService(type, protocol, domain, name, port, txt);
+    RNZeroconf.registerService(type, protocol, domain, name, port, txt)
   }
 
   /**
    * Unpublish a service
    */
   unpublishService(name) {
-    RNZeroconf.unregisterService(name);
+    RNZeroconf.unregisterService(name)
   }
 }

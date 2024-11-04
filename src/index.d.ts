@@ -10,7 +10,7 @@ declare module 'react-native-zeroconf' {
   export default class EventEmitter {
     stop(): void;
 
-    scan(type: string, protocol: string, domain: string): void;
+    scan(type: string, protocol: string, domain: string, regexFilterName: RegExp): void;
 
     publishService(
       type: string,
