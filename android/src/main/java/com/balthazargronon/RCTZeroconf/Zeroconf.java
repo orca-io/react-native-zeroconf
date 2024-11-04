@@ -2,9 +2,11 @@ package com.balthazargronon.RCTZeroconf;
 
 import com.facebook.react.bridge.ReadableMap;
 
+import javax.annotation.Nullable;
+
 public interface Zeroconf {
 
-    void scan(String type, String protocol, String domain);
+    void scan(String type, String protocol, String domain, @Nullable String regexFilterName);
 
     void stop();
 

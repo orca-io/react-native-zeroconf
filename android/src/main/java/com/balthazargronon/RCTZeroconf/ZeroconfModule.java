@@ -71,10 +71,10 @@ public class ZeroconfModule extends ReactContextBaseJavaModule {
      * @param domain   The domain (e.g., "local").
      */
     @ReactMethod
-    public void scan(String type, String protocol, String domain) {
+    public void scan(String type, String protocol, String domain, @Nullable String regexFilterName) {
         executeZeroconfAction(() -> {
             Zeroconf zeroconf = getZeroconfImpl();
-            zeroconf.scan(type, protocol, domain);
+            zeroconf.scan(type, protocol, domain, regexFilterName);
         }, "Exception During Scan");
     }
 

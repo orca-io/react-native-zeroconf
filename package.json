@@ -2,11 +2,10 @@
   "name": "react-native-zeroconf",
   "version": "0.13.8",
   "description": "A Zeroconf discovery utility for react-native",
-  "main": "dist",
+  "main": "./src/index.js",
   "types": "./src/index.d.ts",
   "scripts": {
-    "lint": "eslint src/*.js",
-    "build": "rm -rf dist && mkdir dist && babel src -o dist/index.js"
+    "lint": "eslint src/*.js"
   },
   "repository": {
     "type": "git",
