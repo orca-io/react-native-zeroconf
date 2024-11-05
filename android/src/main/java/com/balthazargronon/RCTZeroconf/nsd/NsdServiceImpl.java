@@ -1,6 +1,5 @@
 package com.balthazargronon.RCTZeroconf.nsd;
 
-import android.annotation.Nullable;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.nsd.NsdManager;
@@ -26,6 +25,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 
 public class NsdServiceImpl implements Zeroconf {
     private static final String TAG = "NsdServiceImpl";
