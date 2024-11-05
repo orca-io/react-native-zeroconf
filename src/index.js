@@ -1,4 +1,4 @@
-import { NativeModules, DeviceEventEmitter } from 'react-native'
+import { NativeModules, DeviceEventEmitter, Platform } from 'react-native'
 import { EventEmitter } from 'events'
 
 const RNZeroconf = NativeModules.RNZeroconf
@@ -126,10 +126,13 @@ export default class Zeroconf extends EventEmitter {
   scan(type = 'http', protocol = 'tcp', domain = 'local.', regexFilterName = undefined) {
     this._services = {}
     this.emit('update')
-    if (regexFilterName instanceof RegExp) {
-      RNZeroconf.scan(type, protocol, domain, regexFilterName.source)
+
+    if (Platform.OS === 'android') {
+      const regexFilterNameStr =
+        regexFilterName instanceof RegExp ? regexFilterName.source : undefined
+      RNZeroconf.scan(type, protocol, domain, regexFilterNameStr)
     } else {
-      RNZeroconf.scan(type, protocol, domain, undefined)
+      RNZeroconf.scan(type, protocol, domain)
     }
   }
 
